@@ -27,9 +27,23 @@ body {
   border: 1px solid cyan;
 }
 .cells {
-  height: 150px;
+  height: 160px;
   border: 1px solid cyan;
 }
 .cells:hover {
-  background-color: gray;
+  background-color: #89ffff;
+  color: black;
+  border: 1px solid black;
+}
+@media screen and (max-width: 600px) {
+  #heading {
+    margin-top: 10px;
+    font-size: 25px;
+  }
+  #game-board {
+    width: 80%;
+  }
+  .cells {
+    height: 16vh;
+  }
 }
