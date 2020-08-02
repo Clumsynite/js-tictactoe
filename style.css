@@ -48,6 +48,10 @@ input[type=text]:focus {
   font-weight: bold;
   background-color: #3bc47c;
 }
+#now-playing {
+  font-size: 25px;
+  text-align: center;
+}
 #game-board {
   display: none;
   grid-template-columns: 1fr 1fr 1fr;
