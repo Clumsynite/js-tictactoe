@@ -6,6 +6,9 @@ const nowPlaying = document.querySelector('#now-playing')
 const gameBoard = document.querySelector('#game-board')
 const cells = document.querySelectorAll('.cells')
 
+let playerOne = ''
+let playerTwo = ''
+
 const player = (name, selection) => {
   return {name, selection}
 }
@@ -17,8 +20,6 @@ const emptyWarning = field => {
   }, 1000)
 }
 
-let playerOne = ''
-let playerTwo = ''
 const startGame = event => {
   if(inputOne.value === ''){emptyWarning(inputOne);}
   else if(inputTwo.value === ''){emptyWarning(inputTwo)}
