@@ -1,9 +1,14 @@
-const gameBoard = document.querySelector('#game-board')
-const cells = document.querySelectorAll('.cells')
 const getPlayerNames = document.querySelector('#get-player')
 const inputOne = document.querySelector('#player-1')
 const inputTwo = document.querySelector('#player-2')
 const startBtn = document.querySelector('#start')
+const nowPlaying = document.querySelector('#now-playing')
+const gameBoard = document.querySelector('#game-board')
+const cells = document.querySelectorAll('.cells')
+
+const player = (name, selection) => {
+  return {name, selection}
+}
 
 const emptyWarning = field => {
   field.value = 'Enter something here'
@@ -11,12 +16,17 @@ const emptyWarning = field => {
     field.value = ''
   }, 1000)
 }
+
+let playerOne = ''
+let playerTwo = ''
 const startGame = event => {
   if(inputOne.value === ''){emptyWarning(inputOne);}
   else if(inputTwo.value === ''){emptyWarning(inputTwo)}
   else { 
     getPlayerNames.style.display = 'none'
     gameBoard.style.display = 'grid'
+    playerOne = player(inputOne.value, 'X')
+    playerTwo = player(inputTwo.value, 'O')
   }
 }
 
@@ -31,7 +41,3 @@ const cellHover = event => {
 Array.from(cells).forEach(cell => {
   cell.addEventListener('mouseover', cellHover)
 })
-
-const player = (name, selection) => {
-  return {name, selection}
-}
