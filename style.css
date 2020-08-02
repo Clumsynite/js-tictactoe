@@ -24,13 +24,16 @@ body {
   color: #59CD90;
   align-items: center;
 }
+#player-1 {
+  margin-left: 4px;
+}
 input[type=text] {
   font-size: 16px;
   border: none;
   background-color: #59cdca;
   outline: none;
   padding: 5px;
-  border-radius: 10px;
+  border-radius: 400px;
 }
 input[type=text]:focus {
   background-color: #3bc47c;
