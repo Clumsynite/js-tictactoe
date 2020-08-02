@@ -15,8 +15,41 @@ body {
   text-align: center;
   font-size: 40px;
 }
+#get-player {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 20px;
+  color: #59CD90;
+  align-items: center;
+}
+input[type=text] {
+  font-size: 16px;
+  border: none;
+  background-color: #59cdca;
+  outline: none;
+  padding: 5px;
+  border-radius: 10px;
+}
+input[type=text]:focus {
+  background-color: #3bc47c;
+}
+#start {
+  margin-top: 10px;
+  width: 150px;
+  padding: 10px;
+  font-size: 20px;
+  background-color: #59CD90;
+  border: none;
+  border-radius: 10px;
+}
+#start:hover {
+  font-weight: bold;
+  background-color: #3bc47c;
+}
 #game-board {
-  display: grid;
+  display: none;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   margin: 40px auto;
