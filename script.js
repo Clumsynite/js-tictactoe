@@ -20,10 +20,35 @@ const Gameboard = {
   placeMove: function (cell, move) {
     this.board[cell] = move
   },
-  renderBoard: function (){
+  renderBoard: function () {
     Array.from(cells).forEach( cell => {
       cell.textContent = this.board[cell.getAttribute('data-cell')]
     })
+  },
+  count: function(value, array){
+    let count = 0;
+    for(let i = 0; i < array.length; ++i){
+        if(array[i] == value)
+            count++;
+    }
+    return count
+  },
+  checkWin: function () {
+    const winConditions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
+    const b = this.board
+    
+    const con = winConditions.filter( i => {
+      const arr = [b[i[0]], b[i[1]], b[i[2]]]
+      return this.count(arr[0], arr) === 3 && arr.indexOf('') === -1
+    })
+    if (con.length == 1){
+      this.declareWinner(b[con[0]])
+      console.log(b[con[0]]);
+    }
+  },
+  declareWinner: function(winner) {
+    const getPlayer = winner === 'X' ? playerOne.name : playerTwo.name
+    nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round` 
   }
 }
 
@@ -116,6 +141,7 @@ const onClick = () => {
     const cellId = event.target.getAttribute('data-cell')
     const playerSelection = playerMethods.getCurrentPlayer().selection
     Gameboard.placeMove(cellId, playerSelection)
+    Gameboard.checkWin()
     Gameboard.renderBoard()
     playerMethods.switchTurns()
     playerMethods.logTurn()
