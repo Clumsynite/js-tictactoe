@@ -77,6 +77,10 @@ input[type=text]:focus {
   color: black;
   border: 1px solid black;
 }
+.cells:active {
+  background-color: black;
+  color: cyan;
+}
 @media screen and (max-width: 600px) {
   #heading {
     margin-top: 10px;

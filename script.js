@@ -15,26 +15,28 @@ const player = (name, selection ,turn) => {
 }
 
 const playerMethods = (() => {
-  const switchTurns = (one,two) => {
-    if(one.turn){
-      one.turn = false
-      two.turn = true
-    }else if(two.turn){
-      two.turn = false
-      one.turn = true
+  const switchTurns = () => {
+    if(playerOne.turn){
+      playerOne.turn = false
+      playerTwo.turn = true
+    }else if(playerTwo.turn){
+      playerTwo.turn = false
+      playerOne.turn = true
     }
   }
-  
-  const checkTurn = (one ,two) => {
-    if(one.turn){
-      nowPlaying.textContent = `${one.name}'s turn`
+  const getCurrentPlayer = () => {
+    return playerOne.turn ? playerOne : playerTwo
+  }  
+  const checkTurn = (one) => {
+    if(playerOne.turn){
+      nowPlaying.textContent = `${playerOne.name}'s turn`
     }
-    if(two.turn){
-      nowPlaying.textContent = `${two.name}'s turn`
+    if(playerTwo.turn){
+      nowPlaying.textContent = `${playerTwo.name}'s turn`
     }
   }
 
-  return {switchTurns, checkTurn}
+  return {switchTurns, getCurrentPlayer, checkTurn}
 })();
 
 const Gameboard = {
@@ -44,7 +46,6 @@ const Gameboard = {
     this.board[cell] = move
   }
 }
-
 
 const emptyWarning = field => {
   field.value = 'Enter something here'
@@ -61,11 +62,9 @@ const initialisePlayer = () => {
   playerTwo = player(inputTwo.value, 'O', false)
   nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player O is <strong>${playerTwo.name}</strong>`
   setTimeout(() => {
-    playerMethods.checkTurn(playerOne, playerTwo)
+    playerMethods.checkTurn()
   }, 1000)
 }
-
-
 
 const startGame = event => {
   if(inputOne.value.trim() === ''){emptyWarning(inputOne);}
@@ -84,4 +83,14 @@ const cellHover = event => {
 
 Array.from(cells).forEach(cell => {
   cell.addEventListener('mouseover', cellHover)
+})
+
+const onClick = () => {
+  event.target.textContent = playerMethods.getCurrentPlayer().selection
+  console.log(playerMethods.getCurrentPlayer().selection)
+  playerMethods.switchTurns()
+}
+
+Array.from(cells).forEach(cell => {
+  cell.addEventListener('click', onClick)
 })
