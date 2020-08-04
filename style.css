@@ -47,6 +47,7 @@ input[type=text]:focus {
   background-color: #59CD90;
   border: none;
   border-radius: 10px;
+  overflow-x: visible;
 }
 #start:hover {
   font-weight: bold;

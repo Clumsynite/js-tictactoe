@@ -19,28 +19,13 @@ const Gameboard = {
   board: { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''},
   placeMove: function (cell, move) {
     this.board[cell] = move
+  },
+  renderBoard: function (){
+    Array.from(cells).forEach( cell => {
+      cell.textContent = this.board[cell.getAttribute('data-cell')]
+    })
   }
 }
-
-const playerMethods = (() => {
-  const switchTurns = () => {
-    if(playerOne.turn){
-      playerOne.turn = false
-      playerTwo.turn = true
-    }else if(playerTwo.turn){
-      playerTwo.turn = false
-      playerOne.turn = true
-    }
-  }
-  const getCurrentPlayer = () => {
-    return playerOne.turn ? playerOne : playerTwo
-  }  
-  const logTurn = () => {
-      nowPlaying.textContent = `${getCurrentPlayer().name}'s turn`
-  }
-
-  return {switchTurns, getCurrentPlayer, logTurn}
-})();
 
 const nameMethods = (() => {
   const emptyWarning = field => {
@@ -66,6 +51,26 @@ const nameMethods = (() => {
   }
 
   return {emptyWarning, lengthWarning, sameNameWarning}
+})();
+
+const playerMethods = (() => {
+  const switchTurns = () => {
+    if(playerOne.turn){
+      playerOne.turn = false
+      playerTwo.turn = true
+    }else if(playerTwo.turn){
+      playerTwo.turn = false
+      playerOne.turn = true
+    }
+  }
+  const getCurrentPlayer = () => {
+    return playerOne.turn ? playerOne : playerTwo
+  }  
+  const logTurn = () => {
+      nowPlaying.textContent = `${getCurrentPlayer().name}'s turn`
+  }
+
+  return {switchTurns, getCurrentPlayer, logTurn}
 })();
 
 const boardMethods = (() => {
@@ -104,19 +109,14 @@ const startGame = event => {
 }
 startBtn.addEventListener('click', startGame)
 
-const cellHover = event => {
-  const cellId = event.target.getAttribute('data-cell') 
-}
-
-Array.from(cells).forEach(cell => {
-  cell.addEventListener('mouseover', cellHover)
-})
-
 const onClick = () => {
   if (event.target.textContent !== ''){
     boardMethods.preventOverwrite()
   }else {
-    event.target.textContent = playerMethods.getCurrentPlayer().selection
+    const cellId = event.target.getAttribute('data-cell')
+    const playerSelection = playerMethods.getCurrentPlayer().selection
+    Gameboard.placeMove(cellId, playerSelection)
+    Gameboard.renderBoard()
     playerMethods.switchTurns()
     playerMethods.logTurn()
   }
