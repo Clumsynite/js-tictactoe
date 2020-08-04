@@ -1,3 +1,4 @@
+const heading = document.querySelector('#heading')
 const getPlayerNames = document.querySelector('#get-player')
 const inputOne = document.querySelector('#player-1')
 const inputTwo = document.querySelector('#player-2')
@@ -9,9 +10,41 @@ const cells = document.querySelectorAll('.cells')
 let playerOne = ''
 let playerTwo = ''
 
-const player = (name, selection) => {
-  return {name, selection}
+const player = (name, selection ,turn) => {
+  return {name, selection, turn}
 }
+
+const playerMethods = (() => {
+  const switchTurns = (one,two) => {
+    if(one.turn){
+      one.turn = false
+      two.turn = true
+    }else if(two.turn){
+      two.turn = false
+      one.turn = true
+    }
+  }
+  
+  const checkTurn = (one ,two) => {
+    if(one.turn){
+      nowPlaying.textContent = `${one.name}'s turn`
+    }
+    if(two.turn){
+      nowPlaying.textContent = `${two.name}'s turn`
+    }
+  }
+
+  return {switchTurns, checkTurn}
+})();
+
+const Gameboard = {
+  gameboard: [1,2,3,4,5,6,7,8,9],
+  board: { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''},
+  placeMove: function (cell, move) {
+    this.board[cell] = move
+  }
+}
+
 
 const emptyWarning = field => {
   field.value = 'Enter something here'
@@ -20,17 +53,27 @@ const emptyWarning = field => {
   }, 1000)
 }
 
-const startGame = event => {
-  if(inputOne.value === ''){emptyWarning(inputOne);}
-  else if(inputTwo.value === ''){emptyWarning(inputTwo)}
-  else { 
-    getPlayerNames.style.display = 'none'
-    gameBoard.style.display = 'grid'
-    playerOne = player(inputOne.value, 'X')
-    playerTwo = player(inputTwo.value, 'O')
-  }
+const initialisePlayer = () => {
+  heading.innerHTML = '<strong>Tic-Tac-Toe</strong>'
+  getPlayerNames.style.display = 'none'
+  gameBoard.style.display = 'grid'
+  playerOne = player(inputOne.value, 'X', true)
+  playerTwo = player(inputTwo.value, 'O', false)
+  nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player O is <strong>${playerTwo.name}</strong>`
+  setTimeout(() => {
+    playerMethods.checkTurn(playerOne, playerTwo)
+  }, 1000)
 }
 
+
+
+const startGame = event => {
+  if(inputOne.value.trim() === ''){emptyWarning(inputOne);}
+  else if(inputTwo.value.trim() === ''){emptyWarning(inputTwo)}
+  else { 
+    initialisePlayer()
+  }
+}
 startBtn.addEventListener('click', startGame)
 
 
