@@ -14,6 +14,14 @@ const player = (name, selection ,turn) => {
   return {name, selection, turn}
 }
 
+const Gameboard = {
+  gameboard: [1,2,3,4,5,6,7,8,9],
+  board: { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''},
+  placeMove: function (cell, move) {
+    this.board[cell] = move
+  }
+}
+
 const playerMethods = (() => {
   const switchTurns = () => {
     if(playerOne.turn){
@@ -33,14 +41,6 @@ const playerMethods = (() => {
 
   return {switchTurns, getCurrentPlayer, logTurn}
 })();
-
-const Gameboard = {
-  gameboard: [1,2,3,4,5,6,7,8,9],
-  board: { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''},
-  placeMove: function (cell, move) {
-    this.board[cell] = move
-  }
-}
 
 const nameMethods = (() => {
   const emptyWarning = field => {
@@ -64,7 +64,19 @@ const nameMethods = (() => {
       inputTwo.value = temp
     }, 1000)
   }
+
   return {emptyWarning, lengthWarning, sameNameWarning}
+})();
+
+const boardMethods = (() => {
+  const preventOverwrite = () => {
+      nowPlaying.textContent = 'Try another cell'
+      setTimeout(() => {
+        playerMethods.logTurn()
+      },500);
+  }
+
+  return { preventOverwrite }
 })();
 
 const initialisePlayer = () => {
@@ -92,10 +104,8 @@ const startGame = event => {
 }
 startBtn.addEventListener('click', startGame)
 
-
 const cellHover = event => {
   const cellId = event.target.getAttribute('data-cell') 
-  console.log(cellId)
 }
 
 Array.from(cells).forEach(cell => {
@@ -103,10 +113,13 @@ Array.from(cells).forEach(cell => {
 })
 
 const onClick = () => {
-  event.target.textContent = playerMethods.getCurrentPlayer().selection
-  console.log(playerMethods.getCurrentPlayer().selection)
-  playerMethods.switchTurns()
-  playerMethods.logTurn()
+  if (event.target.textContent !== ''){
+    boardMethods.preventOverwrite()
+  }else {
+    event.target.textContent = playerMethods.getCurrentPlayer().selection
+    playerMethods.switchTurns()
+    playerMethods.logTurn()
+  }
 }
 
 Array.from(cells).forEach(cell => {
