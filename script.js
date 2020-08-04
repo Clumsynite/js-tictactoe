@@ -6,7 +6,7 @@ const startBtn = document.querySelector('#start')
 const nowPlaying = document.querySelector('#now-playing')
 const gameBoard = document.querySelector('#game-board')
 const cells = document.querySelectorAll('.cells')
-
+const buttons = document.querySelector('#buttons')
 let playerOne = ''
 let playerTwo = ''
 
@@ -43,9 +43,24 @@ const Gameboard = {
 }
 
 const emptyWarning = field => {
-  field.value = 'Enter something here'
+  field.value = 'Enter your playername'
   setTimeout(() => {
     field.value = ''
+  }, 1000)
+}
+
+const lengthWarning = field => {
+  field.value = 'Use a smaller name'
+  setTimeout(() => {
+    field.value = ''
+  }, 1000)
+}
+
+const sameNameWarning = () => {
+  const temp = inputOne.value
+  inputTwo.value = 'Use a different name'
+  setTimeout(() => {
+    inputTwo.value = temp
   }, 1000)
 }
 
@@ -53,6 +68,7 @@ const initialisePlayer = () => {
   heading.innerHTML = '<strong>Tic-Tac-Toe</strong>'
   getPlayerNames.style.display = 'none'
   gameBoard.style.display = 'grid'
+  buttons.style.display = 'block'
   playerOne = player(inputOne.value, 'X', true)
   playerTwo = player(inputTwo.value, 'O', false)
   nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player O is <strong>${playerTwo.name}</strong>`
@@ -62,8 +78,11 @@ const initialisePlayer = () => {
 }
 
 const startGame = event => {
-  if(inputOne.value.trim() === ''){emptyWarning(inputOne);}
-  else if(inputTwo.value.trim() === ''){emptyWarning(inputTwo)}
+  if(inputOne.value.trim()==='' ){emptyWarning(inputOne);}
+  else if(inputOne.value.length > 12){lengthWarning(inputOne)}
+  else if(inputTwo.value.trim()===''){emptyWarning(inputTwo)}
+  else if(inputTwo.value.length > 12){lengthWarning(inputTwo)}
+  else if(inputOne.value===inputTwo.value){sameNameWarning()}
   else { 
     initialisePlayer()
   }

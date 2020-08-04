@@ -88,7 +88,7 @@ input[type=text]:focus {
   color: white;
 }
 #buttons {
-  display: block;
+  display: none;
   text-align: center;
 }
 #reset {
