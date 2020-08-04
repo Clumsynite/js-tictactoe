@@ -42,27 +42,30 @@ const Gameboard = {
   }
 }
 
-const emptyWarning = field => {
-  field.value = 'Enter your playername'
-  setTimeout(() => {
-    field.value = ''
-  }, 1000)
-}
-
-const lengthWarning = field => {
-  field.value = 'Use a smaller name'
-  setTimeout(() => {
-    field.value = ''
-  }, 1000)
-}
-
-const sameNameWarning = () => {
-  const temp = inputOne.value
-  inputTwo.value = 'Use a different name'
-  setTimeout(() => {
-    inputTwo.value = temp
-  }, 1000)
-}
+const nameMethods = (() => {
+  const emptyWarning = field => {
+    field.value = 'Enter your playername'
+    setTimeout(() => {
+      field.value = ''
+    }, 1000)
+  }
+  
+  const lengthWarning = field => {
+    field.value = 'Use a smaller name'
+    setTimeout(() => {
+      field.value = ''
+    }, 1000)
+  }
+  
+  const sameNameWarning = () => {
+    const temp = inputOne.value
+    inputTwo.value = 'Use a different name'
+    setTimeout(() => {
+      inputTwo.value = temp
+    }, 1000)
+  }
+  return {emptyWarning, lengthWarning, sameNameWarning}
+})();
 
 const initialisePlayer = () => {
   heading.innerHTML = '<strong>Tic-Tac-Toe</strong>'
@@ -71,18 +74,18 @@ const initialisePlayer = () => {
   buttons.style.display = 'block'
   playerOne = player(inputOne.value, 'X', true)
   playerTwo = player(inputTwo.value, 'O', false)
-  nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player O is <strong>${playerTwo.name}</strong>`
+  nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player <strong>O</strong> is <strong>${playerTwo.name}</strong>`
   setTimeout(() => {
     playerMethods.logTurn()
-  }, 1000)
+  }, 2000)
 }
 
 const startGame = event => {
-  if(inputOne.value.trim()==='' ){emptyWarning(inputOne);}
-  else if(inputOne.value.length > 12){lengthWarning(inputOne)}
-  else if(inputTwo.value.trim()===''){emptyWarning(inputTwo)}
-  else if(inputTwo.value.length > 12){lengthWarning(inputTwo)}
-  else if(inputOne.value===inputTwo.value){sameNameWarning()}
+  if(inputOne.value.trim()==='' ){nameMethods.emptyWarning(inputOne);}
+  else if(inputOne.value.length > 12){nameMethods.lengthWarning(inputOne)}
+  else if(inputTwo.value.trim()===''){nameMethods.emptyWarning(inputTwo)}
+  else if(inputTwo.value.length > 12){nameMethods.lengthWarning(inputTwo)}
+  else if(inputOne.value===inputTwo.value){nameMethods.sameNameWarning()}
   else { 
     initialisePlayer()
   }
