@@ -7,6 +7,7 @@ const nowPlaying = document.querySelector('#now-playing')
 const gameBoard = document.querySelector('#game-board')
 const cells = document.querySelectorAll('.cells')
 const buttons = document.querySelector('#buttons')
+const reset = document.querySelector('#reset')
 let playerOne = ''
 let playerTwo = ''
 
@@ -15,7 +16,6 @@ const player = (name, selection ,turn) => {
 }
 
 const Gameboard = {
-  gameboard: [1,2,3,4,5,6,7,8,9],
   board: { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''},
   placeMove: function (cell, move) {
     this.board[cell] = move
@@ -42,13 +42,17 @@ const Gameboard = {
       return this.count(arr[0], arr) === 3 && arr.indexOf('') === -1
     })
     if (con.length == 1){
-      this.declareWinner(b[con[0]])
-      console.log(b[con[0]]);
+      this.declareWinner(b[con[0][0]])
+      console.log(b[con[0][0]])
     }
   },
   declareWinner: function(winner) {
     const getPlayer = winner === 'X' ? playerOne.name : playerTwo.name
-    nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round` 
+    console.log(getPlayer)
+    nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round`
+    Array.from(cells).forEach(cell => {
+      cell.classList.add('game-over')
+    })
   }
 }
 
@@ -141,13 +145,24 @@ const onClick = () => {
     const cellId = event.target.getAttribute('data-cell')
     const playerSelection = playerMethods.getCurrentPlayer().selection
     Gameboard.placeMove(cellId, playerSelection)
-    Gameboard.checkWin()
     Gameboard.renderBoard()
     playerMethods.switchTurns()
     playerMethods.logTurn()
+    Gameboard.checkWin()
   }
 }
 
 Array.from(cells).forEach(cell => {
   cell.addEventListener('click', onClick)
 })
+
+const resetGame = () => {
+  Gameboard.board = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''}
+  Gameboard.renderBoard()
+  playerOne = player(playerOne.name, 'X', true)
+  playerTwo = player(playerTwo.name, 'O', false)
+  nowPlaying.textContent = 'Board Reset complete'
+  playerMethods.logTurn()
+}
+
+reset.addEventListener('click', resetGame)

@@ -90,6 +90,9 @@ input[type=text]:focus {
   background-color: black;
   color: white;
 }
+.game-over {
+  pointer-events: none;
+}
 #buttons {
   display: none;
   text-align: center;
