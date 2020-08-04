@@ -27,16 +27,11 @@ const playerMethods = (() => {
   const getCurrentPlayer = () => {
     return playerOne.turn ? playerOne : playerTwo
   }  
-  const checkTurn = (one) => {
-    if(playerOne.turn){
-      nowPlaying.textContent = `${playerOne.name}'s turn`
-    }
-    if(playerTwo.turn){
-      nowPlaying.textContent = `${playerTwo.name}'s turn`
-    }
+  const logTurn = () => {
+      nowPlaying.textContent = `${getCurrentPlayer().name}'s turn`
   }
 
-  return {switchTurns, getCurrentPlayer, checkTurn}
+  return {switchTurns, getCurrentPlayer, logTurn}
 })();
 
 const Gameboard = {
@@ -62,7 +57,7 @@ const initialisePlayer = () => {
   playerTwo = player(inputTwo.value, 'O', false)
   nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player O is <strong>${playerTwo.name}</strong>`
   setTimeout(() => {
-    playerMethods.checkTurn()
+    playerMethods.logTurn()
   }, 1000)
 }
 
@@ -89,6 +84,7 @@ const onClick = () => {
   event.target.textContent = playerMethods.getCurrentPlayer().selection
   console.log(playerMethods.getCurrentPlayer().selection)
   playerMethods.switchTurns()
+  playerMethods.logTurn()
 }
 
 Array.from(cells).forEach(cell => {
