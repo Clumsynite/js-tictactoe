@@ -9,7 +9,7 @@ body {
 }
 #container {
   display: inline-block;
-  margin: auto;
+  margin: 10px auto;
 }
 #heading {
   text-align: center;
@@ -80,13 +80,28 @@ input[type=text]:focus {
   color: cyan;
 }
 .cells:hover {
-  background-color: #89ffff;
+  background-color: cyan;
   color: black;
-  border: 1px solid black;
 }
 .cells:active {
   background-color: black;
   color: white;
+}
+#buttons {
+  display: block;
+  text-align: center;
+}
+#reset {
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: #ff4d4d;
+  color: black;
+}
+#reset:hover {
+  background-color: red;
+  font-weight: bold;
 }
 @media screen and (max-width: 600px) {
   #heading {
