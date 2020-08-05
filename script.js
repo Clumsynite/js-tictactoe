@@ -28,21 +28,20 @@ const Gameboard = {
   preventOverwrite: function () {
     nowPlaying.textContent = 'Try another cell'
     setTimeout(() => {
-     playerMethods.logTurn()
+      playerMethods.logTurn()
     },500);
   },
   count: function(value, array){
     let count = 0;
     for(let i = 0; i < array.length; ++i){
-        if(array[i] == value)
-            count++;
+      if(array[i] == value)
+        count++;
     }
     return count
   },
   checkWin: function () {
     const winConditions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
     const b = this.board
-    
     const con = winConditions.filter( i => {
       const arr = [b[i[0]], b[i[1]], b[i[2]]]
       return this.count(arr[0], arr) === 3 && arr.indexOf('') === -1
@@ -88,14 +87,12 @@ const nameMethods = (() => {
       field.value = ''
     }, 1000)
   }
-  
   const lengthWarning = field => {
     field.value = 'Use a smaller name'
     setTimeout(() => {
       field.value = ''
     }, 1000)
   }
-  
   const sameNameWarning = () => {
     const temp = inputOne.value
     inputTwo.value = 'Use a different name'
@@ -103,7 +100,6 @@ const nameMethods = (() => {
       inputTwo.value = temp
     }, 1000)
   }
-
   return {emptyWarning, lengthWarning, sameNameWarning}
 })();
 
@@ -127,7 +123,7 @@ const playerMethods = (() => {
 })();
 
 const initialisePlayer = () => {
-  heading.innerHTML = '<strong>Tic-Tac-Toe</strong>'
+  heading.innerHTML = '<strong>Tic Tac Toe</strong>'
   getPlayerNames.style.display = 'none'
   gameBoard.style.display = 'grid'
   buttons.style.display = 'block'
@@ -149,7 +145,6 @@ const startGame = event => {
     initialisePlayer()
   }
 }
-startBtn.addEventListener('click', startGame)
 
 const onClick = () => {
   if (event.target.textContent !== ''){
@@ -166,10 +161,6 @@ const onClick = () => {
   }
 }
 
-Array.from(cells).forEach(cell => {
-  cell.addEventListener('click', onClick)
-})
-
 const resetGame = () => {
   Gameboard.board = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''}
   Gameboard.renderBoard()
@@ -179,5 +170,11 @@ const resetGame = () => {
   playerMethods.logTurn()
   Gameboard.enableBoard()
 }
+
+startBtn.addEventListener('click', startGame)
+
+Array.from(cells).forEach(cell => {
+  cell.addEventListener('click', onClick)
+})
 
 reset.addEventListener('click', resetGame)
