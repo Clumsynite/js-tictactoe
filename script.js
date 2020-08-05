@@ -50,8 +50,16 @@ const Gameboard = {
     const getPlayer = winner === 'X' ? playerOne.name : playerTwo.name
     console.log(getPlayer)
     nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round`
+    this.disableBoard()
+  },
+  disableBoard: function() {
     Array.from(cells).forEach(cell => {
       cell.classList.add('game-over')
+    })
+  },
+  enableBoard: function() {
+    Array.from(cells).forEach(cell => {
+      cell.classList.remove('game-over')
     })
   }
 }
@@ -163,6 +171,7 @@ const resetGame = () => {
   playerTwo = player(playerTwo.name, 'O', false)
   nowPlaying.textContent = 'Board Reset complete'
   playerMethods.logTurn()
+  Gameboard.enableBoard()
 }
 
 reset.addEventListener('click', resetGame)
