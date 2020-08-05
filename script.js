@@ -25,6 +25,12 @@ const Gameboard = {
       cell.textContent = this.board[cell.getAttribute('data-cell')]
     })
   },
+  preventOverwrite: function () {
+    nowPlaying.textContent = 'Try another cell'
+    setTimeout(() => {
+     playerMethods.logTurn()
+    },500);
+  },
   count: function(value, array){
     let count = 0;
     for(let i = 0; i < array.length; ++i){
@@ -43,13 +49,18 @@ const Gameboard = {
     })
     if (con.length == 1){
       this.declareWinner(b[con[0][0]])
-      console.log(b[con[0][0]])
     }
   },
   declareWinner: function(winner) {
     const getPlayer = winner === 'X' ? playerOne.name : playerTwo.name
-    console.log(getPlayer)
+    
     nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round`
+    setTimeout(() => {
+      nowPlaying.textContent = "Click reset button for another round"
+    }, 2000)
+    setTimeout(() => {
+      nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round`
+    }, 6000)
     this.disableBoard()
   },
   disableBoard: function() {
@@ -61,6 +72,12 @@ const Gameboard = {
     Array.from(cells).forEach(cell => {
       cell.classList.remove('game-over')
     })
+  },
+  checkTie: function() {
+    if(Object.values(this.board).indexOf('')===-1){
+      this.disableBoard()
+      nowPlaying.textContent = "It's a tie"
+    }
   }
 }
 
@@ -106,19 +123,7 @@ const playerMethods = (() => {
   const logTurn = () => {
       nowPlaying.textContent = `${getCurrentPlayer().name}'s turn`
   }
-
   return {switchTurns, getCurrentPlayer, logTurn}
-})();
-
-const boardMethods = (() => {
-  const preventOverwrite = () => {
-      nowPlaying.textContent = 'Try another cell'
-      setTimeout(() => {
-        playerMethods.logTurn()
-      },500);
-  }
-
-  return { preventOverwrite }
 })();
 
 const initialisePlayer = () => {
@@ -148,7 +153,7 @@ startBtn.addEventListener('click', startGame)
 
 const onClick = () => {
   if (event.target.textContent !== ''){
-    boardMethods.preventOverwrite()
+    Gameboard.preventOverwrite()
   }else {
     const cellId = event.target.getAttribute('data-cell')
     const playerSelection = playerMethods.getCurrentPlayer().selection
@@ -157,6 +162,7 @@ const onClick = () => {
     playerMethods.switchTurns()
     playerMethods.logTurn()
     Gameboard.checkWin()
+    Gameboard.checkTie()
   }
 }
 
