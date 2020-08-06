@@ -15,70 +15,80 @@ const player = (name, selection ,turn) => {
   return {name, selection, turn}
 }
 
-const Gameboard = {
-  board: { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''},
-  placeMove: function (cell, move) {
-    this.board[cell] = move
-  },
-  renderBoard: function () {
+const Gameboard = (() => {
+  let board = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''}
+
+  const getBoard = () => board
+
+  const renderBoard =() => {
     Array.from(cells).forEach( cell => {
-      cell.textContent = this.board[cell.getAttribute('data-cell')]
+      cell.textContent = board[cell.getAttribute('data-cell')]
     })
-  },
-  preventOverwrite: function () {
+  }
+  const clearBoard = () => {
+    board = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''}
+  }
+  const placeMove =  (cell, move) => {
+    board[cell] = move
+  }
+  
+  const preventOverwrite = () => {
     nowPlaying.textContent = 'Try another cell'
     setTimeout(() => {
       playerMethods.logTurn()
     },500);
-  },
-  count: function(value, array){
+  }
+
+  const count = (value, array) => {
     let count = 0;
     for(let i = 0; i < array.length; ++i){
       if(array[i] == value)
         count++;
     }
     return count
-  },
-  checkWin: function () {
-    const winConditions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
-    const b = this.board
-    const con = winConditions.filter( i => {
-      const arr = [b[i[0]], b[i[1]], b[i[2]]]
-      return this.count(arr[0], arr) === 3 && arr.indexOf('') === -1
-    })
-    if (con.length == 1){
-      this.declareWinner(b[con[0][0]])
-    }
-  },
-  declareWinner: function(winner) {
+  }
+
+  const declareWinner = (winner) => {
     const getPlayer = winner === 'X' ? playerOne.name : playerTwo.name
     
     nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round`
-    setTimeout(() => {
-      nowPlaying.textContent = "Click reset button for another round"
-    }, 2000)
-    setTimeout(() => {
-      nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round`
-    }, 6000)
-    this.disableBoard()
-  },
-  disableBoard: function() {
-    Array.from(cells).forEach(cell => {
+
+    disableBoard()
+  }
+
+  const checkWin = () => {
+    const winConditions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
+    const b = board
+    const con = winConditions.filter( i => {
+      const arr = [b[i[0]], b[i[1]], b[i[2]]]
+      return count(arr[0], arr) === 3 && arr.indexOf('') === -1
+    })
+    if (con.length == 1){
+      declareWinner(b[con[0][0]])
+    }
+  }
+
+  const disableBoard = () => {
+    cells.forEach(cell => {
       cell.classList.add('game-over')
     })
-  },
-  enableBoard: function() {
-    Array.from(cells).forEach(cell => {
+  }
+
+  const enableBoard = () => {
+    cells.forEach(cell => {
       cell.classList.remove('game-over')
     })
-  },
-  checkTie: function() {
-    if(Object.values(this.board).indexOf('')===-1){
-      this.disableBoard()
+  }
+
+  const checkTie = () => {
+    if(Object.values(board).indexOf('')===-1){
+      disableBoard()
       nowPlaying.textContent = "It's a tie"
     }
   }
-}
+
+  return {clearBoard, getBoard, renderBoard, placeMove, preventOverwrite, checkWin, disableBoard, enableBoard, checkTie}
+})();
 
 const nameMethods = (() => {
   const emptyWarning = field => {
@@ -156,13 +166,13 @@ const onClick = () => {
     Gameboard.renderBoard()
     playerMethods.switchTurns()
     playerMethods.logTurn()
-    Gameboard.checkWin()
     Gameboard.checkTie()
+    Gameboard.checkWin()
   }
 }
 
 const resetGame = () => {
-  Gameboard.board = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''}
+  Gameboard.clearBoard()
   Gameboard.renderBoard()
   playerOne = player(playerOne.name, 'X', true)
   playerTwo = player(playerTwo.name, 'O', false)
