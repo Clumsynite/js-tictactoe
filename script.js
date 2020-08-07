@@ -221,10 +221,11 @@ const onePlayerGame = () => {
   const playerSelection = playerMethods.getCurrentPlayer().selection
   Gameboard.placeMove(cellId, playerSelection)
   playerMethods.switchTurns()
-  const time = Math.random() * 1
+  const time = (Math.random() * 5)*100
   setTimeout(() => {
     computerPlays()
-  },time*1000)
+  },time)
+  console.log('computer is not so smart right now')
   Gameboard.renderBoard()
   Gameboard.checkTie()
   Gameboard.checkWin()
