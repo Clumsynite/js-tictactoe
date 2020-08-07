@@ -30,14 +30,12 @@ const Gameboard = (() => {
   const getCell = (cell) => {
     return board[cell]
   }
-
   const checkBoardFull = () => {
     if(Object.values(board).indexOf('')===-1){
       return true
     }
     return false
   }
-
   const renderBoard =() => {
     Array.from(cells).forEach( cell => {
       cell.textContent = board[cell.getAttribute('data-cell')]
@@ -49,14 +47,12 @@ const Gameboard = (() => {
   const placeMove =  (cell, move) => {
     board[cell] = move
   }
-  
   const preventOverwrite = () => {
     nowPlaying.textContent = 'Try another cell'
     setTimeout(() => {
       playerMethods.logTurn()
     },500);
   }
-
   const count = (value, array) => {
     let count = 0;
     for(let i = 0; i < array.length; ++i){
@@ -65,17 +61,12 @@ const Gameboard = (() => {
     }
     return count
   }
-
   const declareWinner = (winner) => {
     const getPlayer = winner === 'X' ? playerOne.name : playerTwo.name
-    
     nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round`
-    
     playerMethods.state = 'won'
-
     disableBoard()
   }
-
   const checkWin = () => {
     const winConditions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
     const b = board
@@ -87,19 +78,16 @@ const Gameboard = (() => {
       declareWinner(b[con[0][0]])
     }
   }
-
   const disableBoard = () => {
     cells.forEach(cell => {
       cell.classList.add('game-over')
     })
   }
-
   const enableBoard = () => {
     cells.forEach(cell => {
       cell.classList.remove('game-over')
     })
   }
-
   const checkTie = () => {
     if(Object.values(board).indexOf('')===-1){
       disableBoard()
@@ -107,7 +95,6 @@ const Gameboard = (() => {
       playerMethods.state = 'tie'
     }
   }
-
   return {clearBoard, getBoard, getCell, checkBoardFull, renderBoard, placeMove, preventOverwrite, checkWin, disableBoard, enableBoard, checkTie}
 })();
 
@@ -160,7 +147,6 @@ const twoPlayerInput = () => {
   gameMode.style.display = 'none'
   getPlayerNames.style.display = 'flex'
 }
-
 const onePlayerInput = () => {
   gameMode.style.display = 'none'
   compDiv.style.display = 'flex'
@@ -192,6 +178,7 @@ const initialiseOnePlayer = () => {
     playerMethods.logTurn()
   }, 1000)
 }
+
 const startGame = () => {
   if(inputOne.value.trim()==='' ){nameMethods.emptyWarning(inputOne);}
   else if(inputOne.value.length > 12){nameMethods.lengthWarning(inputOne)}
@@ -220,7 +207,6 @@ const twoPlayerGame = () => {
   Gameboard.checkTie()
   Gameboard.checkWin()
 }
-
 const onePlayerGame = () => {
   const cellId = event.target.getAttribute('data-cell')
   const playerSelection = playerMethods.getCurrentPlayer().selection
