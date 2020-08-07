@@ -9,6 +9,10 @@
 <body>
   <div id='container'>
     <div id='heading'>Welcome to Clumsyknight's <strong>TicTacToe</strong></div>
+    <div id='game-mode'>
+      <button id='vs-player' class='gameBtn'>Player vs Player</button>
+      <button id='vs-pc' class='gameBtn'>Player vs Computer</button>
+    </div>
     <div id='get-player'>
       <div id='pl-1'>
         Enter Player <strong>X</strong> name: <input type="text" name="player-1" id="player-1" spellcheck="false"/>
@@ -16,7 +20,16 @@
       <div id='pl-2'>
         Enter Player <strong>O</strong> name: <input type="text" name="player-2" id="player-2" spellcheck="false"/>
       </div>
-      <button id='start' title='Start Game'> Start Game</button>
+      <button id='start-pvp' title='Play against Player' class='gameBtn'> Start Game</button>
+    </div>
+    <div id='get-x'>
+      <div id='plr-x'>
+        Enter Player <strong>X</strong> name: <input type="text" name="player-1" id="player-x" spellcheck="false"/>
+      </div>
+      <div id='comp'>
+       Player <strong>O</strong> is <strong><span id='cp'>Computer</span></strong>
+      </div>
+      <button id='start-pvc' title='Play against Computer' class='gameBtn'> Start Game</button>
     </div>
     <div id='now-playing'></div>
     <div id='game-board'>
