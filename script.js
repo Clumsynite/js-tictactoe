@@ -221,11 +221,13 @@ const onePlayerGame = () => {
   const playerSelection = playerMethods.getCurrentPlayer().selection
   Gameboard.placeMove(cellId, playerSelection)
   playerMethods.switchTurns()
-  computerPlays()
+  const time = Math.random() * 1
+  setTimeout(() => {
+    computerPlays()
+  },time*1000)
   Gameboard.renderBoard()
   Gameboard.checkTie()
   Gameboard.checkWin()
-
 }
 
 const computerPlays = () => {
@@ -238,6 +240,7 @@ const computerPlays = () => {
     }
   }
   Gameboard.placeMove(random, playerSelection)
+  Gameboard.renderBoard()
   Gameboard.checkTie()
   Gameboard.checkWin()
   playerMethods.switchTurns()
