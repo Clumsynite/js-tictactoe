@@ -26,7 +26,6 @@ body {
   margin-top: 40px;
   display: flex;
   justify-content: space-evenly;
-  
 }
 #vs-player, #vs-pc {
   background-color: #14ff8a;
@@ -80,7 +79,7 @@ input[type=text]:focus {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   margin: 25px auto;
-  width: 500px;
+  width: 420px;
   height: auto;
   box-sizing: border-box;
   box-shadow: 0 4px 8px 0 cyan;
@@ -91,7 +90,7 @@ input[type=text]:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 160px;
+  height: 140px;
   border: 1px solid cyan;
   text-align: center;
   font-size: 60px;
