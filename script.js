@@ -70,6 +70,8 @@ const Gameboard = (() => {
     const getPlayer = winner === 'X' ? playerOne.name : playerTwo.name
     
     nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round`
+    
+    playerMethods.state = 'won'
 
     disableBoard()
   }
@@ -102,6 +104,7 @@ const Gameboard = (() => {
     if(Object.values(board).indexOf('')===-1){
       disableBoard()
       nowPlaying.textContent = "It's a tie"
+      playerMethods.state = 'tie'
     }
   }
 
@@ -133,6 +136,8 @@ const nameMethods = (() => {
 
 const playerMethods = (() => {
   let mode = ''
+  let state = ''
+  const getState = () => state
   const switchTurns = () => {
     if(playerOne.turn){
       playerOne.turn = false
@@ -148,7 +153,7 @@ const playerMethods = (() => {
   const logTurn = () => {
       nowPlaying.textContent = `${getCurrentPlayer().name}'s turn`
   }
-  return {switchTurns, getCurrentPlayer, logTurn}
+  return {getState, switchTurns, getCurrentPlayer, logTurn}
 })();
 
 const twoPlayerInput = () => {
@@ -221,7 +226,7 @@ const onePlayerGame = () => {
   const playerSelection = playerMethods.getCurrentPlayer().selection
   Gameboard.placeMove(cellId, playerSelection)
   playerMethods.switchTurns()
-  const time = (Math.random() * 5)*100
+  const time = (Math.random() * 3)*100
   setTimeout(() => {
     computerPlays()
   },time)
@@ -236,7 +241,7 @@ const computerPlays = () => {
   let random = Math.floor(Math.random()* 8) + 1
   while(Gameboard.getCell(random) !== ''){
     random = Math.floor(Math.random()* 8) + 1
-    if(Gameboard.checkBoardFull()){
+    if(Gameboard.checkBoardFull() || playerMethods.getState() !== ''){
       break;
     }
   }
@@ -265,6 +270,7 @@ const resetGame = () => {
   nowPlaying.textContent = 'Board Reset complete'
   playerMethods.logTurn()
   Gameboard.enableBoard()
+  playerMethods.state = ''
 }
 
 vsPlayer.addEventListener('click', twoPlayerInput)
