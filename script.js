@@ -239,10 +239,7 @@ const onePlayerGame = () => {
 const computerPlays = () => {
   const playerSelection = playerMethods.getCurrentPlayer().selection
   const emptyArray = Gameboard.getEmptyCells()
-  let random = 0
-  if(!Gameboard.checkBoardFull()){
-    random = emptyArray[Math.floor(Math.random() * emptyArray.length)]
-  }
+  let random = emptyArray[Math.floor(Math.random() * emptyArray.length)]
   console.log(random)
   Gameboard.placeMove(random, playerSelection)
   Gameboard.renderBoard()
