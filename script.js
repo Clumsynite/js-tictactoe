@@ -25,8 +25,11 @@ const player = (name, selection ,turn) => {
 const Gameboard = (() => {
   let board = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '',9: ''}
 
+  const winConditions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
+
   const getBoard = () => board
-  
+  const getWinConditions = () => winConditions
+
   const getCell = (cell) => {
     return board[cell]
   }
@@ -80,7 +83,6 @@ const Gameboard = (() => {
     disableBoard()
   }
   const checkWin = () => {
-    const winConditions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
     const b = board
     const con = winConditions.filter( i => {
       const arr = [b[i[0]], b[i[1]], b[i[2]]]
@@ -107,7 +109,7 @@ const Gameboard = (() => {
       playerMethods.state = 'tie'
     }
   }
-  return {clearBoard, getBoard, getCell, getEmptyCells, getXCells, getOCells, checkBoardFull, renderBoard, placeMove, preventOverwrite, checkWin, disableBoard, enableBoard, checkTie}
+  return {clearBoard, getBoard, getWinConditions, getCell, getEmptyCells, getXCells, getOCells, checkBoardFull, renderBoard, placeMove, preventOverwrite, checkWin, disableBoard, enableBoard, checkTie}
 })();
 
 const nameMethods = (() => {
@@ -240,7 +242,6 @@ const computerPlays = () => {
   const playerSelection = playerMethods.getCurrentPlayer().selection
   const emptyArray = Gameboard.getEmptyCells()
   let random = emptyArray[Math.floor(Math.random() * emptyArray.length)]
-  console.log(random)
   Gameboard.placeMove(random, playerSelection)
   Gameboard.renderBoard()
   Gameboard.checkTie()
