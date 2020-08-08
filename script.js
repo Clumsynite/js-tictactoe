@@ -32,9 +32,7 @@ const Gameboard = (() => {
   const getBoard = () => board
   const getWinConditions = () => winConditions
   const getWinner = () => winner
-
   const setWinner = (value) => {winner = value}
-
   const getCell = (cell) => {
     return board[cell]
   }
@@ -175,31 +173,38 @@ const onePlayerInput = () => {
   compDiv.style.display = 'flex'
 }
 
-const initialiseTwoPlayer = () => {
+const initialAnnoucement = () => {
+  nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player <strong>O</strong> is <strong>${playerTwo.name}</strong>`
+}
+
+const initialText = () => {
   heading.innerHTML = '<strong>Tic Tac Toe</strong>'
   getPlayerNames.style.display = 'none'
+  compDiv.style.display = 'none'
   gameBoard.style.display = 'grid'
   buttons.style.display = 'block'
-  playerOne = player(inputOne.value, 'X', true)
-  playerTwo = player(inputTwo.value, 'O', false)
-  nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player <strong>O</strong> is <strong>${playerTwo.name}</strong>`
-  playerMethods.setMode('pvp')
+}
+const delayLog = () => {
   setTimeout(() => {
     playerMethods.logTurn()
   }, 1000)
 }
+
+const initialiseTwoPlayer = () => {
+  initialText()
+  playerOne = player(inputOne.value, 'X', true)
+  playerTwo = player(inputTwo.value, 'O', false)
+  initialAnnoucement()
+  playerMethods.setMode('pvp')
+  delayLog()
+}
 const initialiseOnePlayer = () => {
-  heading.innerHTML = '<strong>Tic Tac Toe</strong>'
-  compDiv.style.display = 'none'
-  gameBoard.style.display = 'grid'
-  buttons.style.display = 'block'
+  initialText()
   playerOne = player(inputX.value, 'X', true)
   playerTwo = player('Computer', 'O', false)
-  nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player <strong>O</strong> is <strong>${playerTwo.name}</strong>`
+  initialAnnoucement()
   playerMethods.setMode('pvc')
-  setTimeout(() => {
-    playerMethods.logTurn()
-  }, 1000)
+  delayLog()
 }
 
 const startGame = () => {
@@ -239,12 +244,10 @@ const onePlayerGame = () => {
   setTimeout(() => {
     computerPlays()
   },time)
-  console.log('computer is not so smart right now')
   Gameboard.renderBoard()
   Gameboard.checkTie()
   Gameboard.checkWin()
 }
-
 const computerPlays = () => {
   const playerSelection = playerMethods.getCurrentPlayer().selection
   const emptyArray = Gameboard.getEmptyCells()
@@ -272,7 +275,9 @@ const resetGame = () => {
   playerOne = player(playerOne.name, 'X', true)
   playerTwo = player(playerTwo.name, 'O', false)
   nowPlaying.textContent = 'Board Reset complete'
-  playerMethods.logTurn()
+  setTimeout(() => {
+    playerMethods.logTurn()
+  },500)
   Gameboard.enableBoard()
   playerMethods.setState('')
   Gameboard.setWinner('')
