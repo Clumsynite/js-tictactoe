@@ -30,6 +30,18 @@ const Gameboard = (() => {
   const getCell = (cell) => {
     return board[cell]
   }
+  const getVlueArray = (value) => {
+    let array = []
+    for(let i = 1; i < 10; i++){
+      if(board[i] == value){
+        array.push(i)
+      }
+    }
+    return array
+  }
+  const getEmptyCells = () => getVlueArray('')
+  const getXCells = () => getVlueArray('X')
+  const getOCells = () => getVlueArray('O')
   const checkBoardFull = () => {
     if(Object.values(board).indexOf('')===-1){
       return true
@@ -95,7 +107,7 @@ const Gameboard = (() => {
       playerMethods.state = 'tie'
     }
   }
-  return {clearBoard, getBoard, getCell, checkBoardFull, renderBoard, placeMove, preventOverwrite, checkWin, disableBoard, enableBoard, checkTie}
+  return {clearBoard, getBoard, getCell, getEmptyCells, getXCells, getOCells, checkBoardFull, renderBoard, placeMove, preventOverwrite, checkWin, disableBoard, enableBoard, checkTie}
 })();
 
 const nameMethods = (() => {
@@ -124,6 +136,8 @@ const nameMethods = (() => {
 const playerMethods = (() => {
   let mode = ''
   let state = ''
+  const getMode = () => mode
+  const setMode = (value) => {mode = value}
   const getState = () => state
   const switchTurns = () => {
     if(playerOne.turn){
@@ -140,7 +154,7 @@ const playerMethods = (() => {
   const logTurn = () => {
       nowPlaying.textContent = `${getCurrentPlayer().name}'s turn`
   }
-  return {getState, switchTurns, getCurrentPlayer, logTurn}
+  return {getMode, setMode, getState, switchTurns, getCurrentPlayer, logTurn}
 })();
 
 const twoPlayerInput = () => {
@@ -160,7 +174,7 @@ const initialiseTwoPlayer = () => {
   playerOne = player(inputOne.value, 'X', true)
   playerTwo = player(inputTwo.value, 'O', false)
   nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player <strong>O</strong> is <strong>${playerTwo.name}</strong>`
-  playerMethods.mode = 'pvp'
+  playerMethods.setMode('pvp')
   setTimeout(() => {
     playerMethods.logTurn()
   }, 1000)
@@ -173,7 +187,7 @@ const initialiseOnePlayer = () => {
   playerOne = player(inputX.value, 'X', true)
   playerTwo = player('Computer', 'O', false)
   nowPlaying.innerHTML = `Player <strong>X</strong> is <strong>${playerOne.name}</strong> and Player <strong>O</strong> is <strong>${playerTwo.name}</strong>`
-  playerMethods.mode = 'pvc'
+  playerMethods.setMode('pvc')
   setTimeout(() => {
     playerMethods.logTurn()
   }, 1000)
@@ -224,13 +238,12 @@ const onePlayerGame = () => {
 
 const computerPlays = () => {
   const playerSelection = playerMethods.getCurrentPlayer().selection
-  let random = Math.floor(Math.random()* 8) + 1
-  while(Gameboard.getCell(random) !== ''){
-    random = Math.floor(Math.random()* 8) + 1
-    if(Gameboard.checkBoardFull() || playerMethods.getState() !== ''){
-      break;
-    }
+  const emptyArray = Gameboard.getEmptyCells()
+  let random = 0
+  if(!Gameboard.checkBoardFull()){
+    random = emptyArray[Math.floor(Math.random() * emptyArray.length)]
   }
+  console.log(random)
   Gameboard.placeMove(random, playerSelection)
   Gameboard.renderBoard()
   Gameboard.checkTie()
@@ -241,9 +254,9 @@ const computerPlays = () => {
 const onClick = () => {
   if (event.target.textContent !== ''){
     Gameboard.preventOverwrite()
-  }else if(playerMethods.mode ==='pvp'){
+  }else if(playerMethods.getMode() ==='pvp'){
     twoPlayerGame()
-  }else if(playerMethods.mode ==='pvc'){
+  }else if(playerMethods.getMode() ==='pvc'){
     onePlayerGame()
   }
 }
