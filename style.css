@@ -97,10 +97,6 @@ input[type=text]:focus {
   font-weight: bold;
   color: cyan;
 }
-.cells:hover {
-  background-color: cyan;
-  color: black;
-}
 .cells:active {
   background-color: black;
   color: white;
@@ -134,5 +130,12 @@ input[type=text]:focus {
   }
   .cells {
     height: 16vh;
+  }
+}
+
+@media (hover: hover) {
+  .cells:hover {
+    background-color: cyan;
+    color: black;
   }
 }
