@@ -27,8 +27,13 @@ const Gameboard = (() => {
 
   const winConditions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
 
+  let winner = ''
+
   const getBoard = () => board
   const getWinConditions = () => winConditions
+  const getWinner = () => winner
+
+  const setWinner = (value) => {winner = value}
 
   const getCell = (cell) => {
     return board[cell]
@@ -78,8 +83,9 @@ const Gameboard = (() => {
   }
   const declareWinner = (winner) => {
     const getPlayer = winner === 'X' ? playerOne.name : playerTwo.name
+    setWinner(winner)
     nowPlaying.innerHTML = `<strong>${getPlayer}</strong> won this round`
-    playerMethods.state = 'won'
+    playerMethods.setState('win')
     disableBoard()
   }
   const checkWin = () => {
@@ -106,10 +112,10 @@ const Gameboard = (() => {
     if(Object.values(board).indexOf('')===-1){
       disableBoard()
       nowPlaying.textContent = "It's a tie"
-      playerMethods.state = 'tie'
+      playerMethods.setState('tie')
     }
   }
-  return {clearBoard, getBoard, getWinConditions, getCell, getEmptyCells, getXCells, getOCells, checkBoardFull, renderBoard, placeMove, preventOverwrite, checkWin, disableBoard, enableBoard, checkTie}
+  return {clearBoard, getBoard, getWinner, setWinner, getWinConditions, getCell, getEmptyCells, getXCells, getOCells, checkBoardFull, renderBoard, placeMove, preventOverwrite, checkWin, disableBoard, enableBoard, checkTie}
 })();
 
 const nameMethods = (() => {
@@ -141,6 +147,7 @@ const playerMethods = (() => {
   const getMode = () => mode
   const setMode = (value) => {mode = value}
   const getState = () => state
+  const setState = (value) => {state = value}
   const switchTurns = () => {
     if(playerOne.turn){
       playerOne.turn = false
@@ -156,7 +163,7 @@ const playerMethods = (() => {
   const logTurn = () => {
       nowPlaying.textContent = `${getCurrentPlayer().name}'s turn`
   }
-  return {getMode, setMode, getState, switchTurns, getCurrentPlayer, logTurn}
+  return {getMode, setMode, getState, setState, switchTurns, getCurrentPlayer, logTurn}
 })();
 
 const twoPlayerInput = () => {
@@ -267,7 +274,8 @@ const resetGame = () => {
   nowPlaying.textContent = 'Board Reset complete'
   playerMethods.logTurn()
   Gameboard.enableBoard()
-  playerMethods.state = ''
+  playerMethods.setState('')
+  Gameboard.setWinner('')
 }
 
 vsPlayer.addEventListener('click', twoPlayerInput)
